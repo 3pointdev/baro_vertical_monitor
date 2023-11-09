@@ -131,7 +131,7 @@ export default function MonitorItem({ data }: IProps) {
 const Container = styled.li`
   position: relative;
   width: 100%;
-  height: 25%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -176,6 +176,7 @@ const Header = {
     font-weight: 600;
   `,
   Lot: styled.p`
+    flex-shrink: 0;
     max-width: 80%;
     font-size: 2.8vh;
     line-height: 1;
@@ -228,13 +229,17 @@ const RealTimeInfo = {
 const Footer = {
   Wrap: styled.div`
     z-index: 1;
-    height: 72px;
+    height: 25%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background: ${StyleColor.BORDER};
     padding: 0 16px;
     position: relative;
+
+    @media screen and (max-height: 1070px) {
+      display: none !important;
+    }
   `,
   Progress: styled.div<{ progress: number }>`
     z-index: 1;
