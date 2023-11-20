@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Linker from "components/linker/linker";
 import MonitorItem from "components/monitor/monitorItem";
 import Timer from "components/timer/timer";
+import dayjs from "dayjs";
 import { inject, observer } from "mobx-react";
 import { Alert } from "modules/alert.module";
 import { NextRouter } from "next/router";
@@ -25,6 +26,11 @@ function Home({ router, viewModel }: IProps) {
   const [isOpenMonitorMenu, setIsOpenMonitorMenu] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log(
+      `%c   refreshTime : ${dayjs(new Date()).format("HH:mm:ss")}   `,
+      "color:#ffffff; background:#ff0000"
+    );
+
     const monitor: string =
       router.query.monitor?.toString() ??
       window.localStorage.getItem("monitor");
@@ -52,8 +58,8 @@ function Home({ router, viewModel }: IProps) {
   const handleClickOtherMonitor = async (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     const { id } = event.currentTarget.dataset;
-    viewModel.router.replace(`?monitor=${id}`);
     window.localStorage.setItem("monitor", id);
+    viewModel.router.replace(`?monitor=${id}`);
     viewModel.initialize(id);
     setIsOpenMenu(false);
   };
