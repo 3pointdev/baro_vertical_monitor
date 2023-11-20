@@ -55,6 +55,7 @@ export default class ViewModel extends DefaultViewModel {
 
   initialize = async (monitor) => {
     window.localStorage.setItem("monitor", monitor);
+    await this.router.replace(`?monitor=${monitor}`);
 
     await this.getMounted(monitor);
 
