@@ -14,6 +14,7 @@ import {
 import MachineDto from "src/dto/machine/machine.dto";
 import MonitorListDto from "src/dto/monitor/monitorList.dto";
 import MountedDto from "src/dto/monitor/mounted.dto";
+import VersionDto from "src/dto/monitor/version.dto";
 import MonitorNoticeDto from "src/dto/notice.dto";
 import NotificationDto from "src/dto/notification.dto";
 import NotificationModel from "src/model/notification.model";
@@ -25,6 +26,7 @@ export default class ViewModel extends DefaultViewModel {
   public notiModel: NotificationModel = new NotificationModel();
   public mountedList: MountedDto = new MountedDto();
   public monitorList: MonitorListDto[] = [];
+  public versionList: VersionDto[] = [];
 
   public notice: string = "";
   public unMount: boolean = false;
@@ -37,6 +39,12 @@ export default class ViewModel extends DefaultViewModel {
 
   constructor(props: IDefaultProps) {
     super(props);
+
+    this.versionList = [
+      { id: 0, name: "default", url: "/" },
+      { id: 1, name: "renew_A", url: "/renew-a" },
+      { id: 2, name: "renew_B", url: "/renew-b" },
+    ];
 
     makeObservable(this, {
       machines: observable,

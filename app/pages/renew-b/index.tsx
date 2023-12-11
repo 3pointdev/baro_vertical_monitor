@@ -1,11 +1,9 @@
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Linker from "components/linker/linker";
-import MonitorItem from "components/monitor/monitorItem";
+import MonitorItem from "components/renew-b/monitorItem";
 import Timer from "components/timer/timer";
-import dayjs from "dayjs";
 import { inject, observer } from "mobx-react";
-import { Alert } from "modules/alert.module";
 import { NextRouter } from "next/router";
 import { StyleColor } from "public/color";
 import BarofactorySquare from "public/images/logo/barofactory-square";
@@ -15,7 +13,6 @@ import MonitorListDto from "src/dto/monitor/monitorList.dto";
 import VersionDto from "src/dto/monitor/version.dto";
 import ViewModel from "src/viewModel/viewModel";
 import styled, { css, keyframes } from "styled-components";
-import { SweetAlertResult } from "sweetalert2";
 
 interface IProps {
   viewModel: ViewModel;
@@ -28,11 +25,6 @@ function Home({ router, viewModel }: IProps) {
   const [isOpenVersionMenu, setIsOpenVersionMenu] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(
-      `%c   refreshTime : ${dayjs(new Date()).format("HH:mm:ss")}   `,
-      "color:#ffffff; background:#ff0000"
-    );
-
     const monitor: string =
       router.query.monitor?.toString() ??
       window.localStorage.getItem("monitor");
@@ -79,39 +71,6 @@ function Home({ router, viewModel }: IProps) {
     setIsOpenMenu(false);
   };
 
-  const handleClickNoticeEdit = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    Alert.prompt({
-      title: "공지사항 변경",
-      inputType: "text",
-      showCancel: true,
-      showDeny: true,
-      placeholder: "변경 할 공지사항을 입력해 주세요.",
-      defaultValue: viewModel.notice,
-      confirm: "변경",
-      cancel: "취소",
-      deny: "전체변경",
-      denyColor: StyleColor.PRIMARY,
-      confirmColor: StyleColor.FINISH,
-      callback: (result: SweetAlertResult) => {
-        if (result.isConfirmed) {
-          viewModel.insertNotice(result.value);
-          return setIsOpenMenu(false);
-        }
-        if (result.isDenied) {
-          return viewModel.insertNoticeAll(result.value);
-        }
-      },
-      validation: (result: string, resolve: (error?: string) => void) => {
-        if (result === "") {
-          resolve("새로운 공지사항을 입력해 주세요");
-        } else {
-          resolve();
-        }
-      },
-    });
-  };
-
   return (
     <MonitoringContainer>
       <Header.Wrap>
@@ -140,10 +99,8 @@ function Home({ router, viewModel }: IProps) {
             style={{ cursor: "pointer" }}
           />
         </SlideMenu.Head>
+
         <SlideMenu.Menu>
-          <Linker onClick={handleClickNoticeEdit} className="slide_menu">
-            공지사항
-          </Linker>
           <Linker onClick={handleClickOpenVersionList} className="slide_menu">
             <p>버전</p>
           </Linker>
@@ -222,7 +179,7 @@ const Header = {
     display: flex;
     align-items: center;
     padding: 23px 20px;
-    height: 50px;
+    height: 80px;
     position: relative;
     background: ${StyleColor.BACKGROUND};
     border-bottom: 1px solid ${StyleColor.DARKBACKGROUND};
@@ -230,14 +187,14 @@ const Header = {
 
   Menu: styled(FontAwesomeIcon)`
     z-index: 2;
-    font-size: 40px;
+    font-size: 56px;
     cursor: pointer;
   `,
 };
 
 const Article = {
   Wrap: styled.ul`
-    height: calc(100vh - 220px);
+    height: calc(100vh - 270px);
     display: flex;
     flex-direction: column;
     padding: 16px;
@@ -264,7 +221,7 @@ const textScroll = keyframes`
 
 const Footer = {
   Wrap: styled.div`
-    height: 100px;
+    height: 120px;
     width: 100%;
     padding: 0 16px;
     display: flex;
@@ -276,14 +233,14 @@ const Footer = {
 
     & svg {
       flex-shrink: 0;
-      height: 100px;
-      width: 100px;
+      height: 120px;
+      width: 120px;
       background: ${StyleColor.BACKGROUND};
       z-index: 99;
     }
   `,
   Notice: styled.div<{ isLongText: boolean; length: number }>`
-    font-size: 3vh;
+    font-size: 3.6vh;
     font-weight: 500;
     line-height: 1;
     font-family: "pretendard", sans-serif;
