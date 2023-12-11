@@ -128,7 +128,12 @@ export default function MonitorItem({ data }: IProps) {
     <Container className="monitoring_item">
       <MachineStatusWrap backgroundColor={executionColor}>
         <MachineNumber>{data.machineNo}</MachineNumber>
-        <Counter>{`${data.partCount} / ${data.planCount}`}</Counter>
+        <Counter>
+          <p>{`${data.partCount}/`}</p>
+          <p className={data.planCount > 0 ? "" : "not_value"}>
+            {`${data.planCount > 0 ? data.planCount : "미입력"}`}
+          </p>
+        </Counter>
         <Worker>홍길동</Worker>
         <ProductionInfomation textlength={data.program?.length}>
           <p className="program">{data.program}</p>
@@ -211,6 +216,12 @@ const Counter = styled.p`
   top: 16px;
   font-size: 5.6vw;
   font-weight: 700;
+  white-space: nowrap;
+  display: flex;
+
+  & .not_value {
+    color: ${StyleColor.WARNNING};
+  }
 `;
 
 const Worker = styled.p`

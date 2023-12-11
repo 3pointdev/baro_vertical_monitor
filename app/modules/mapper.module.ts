@@ -177,6 +177,7 @@ class MapperModule {
       matchData.partCount = +dataArray[5];
       matchData.isReceivePartCount = true;
     }
+    matchData.countTime = new Date().getTime();
     matchData.activeTime = dataArray[11];
     matchData.planCount = +dataArray[6];
     matchData.wait = +dataArray[10];
