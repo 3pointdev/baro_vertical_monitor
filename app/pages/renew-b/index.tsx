@@ -36,7 +36,7 @@ function Home({ router, viewModel }: IProps) {
     }
 
     setTimeout(() => {
-      location.replace(`?monitor=${monitor}`);
+      location.replace(`/renew-b?monitor=${monitor}`);
     }, 1200000);
 
     return () => {
@@ -58,7 +58,7 @@ function Home({ router, viewModel }: IProps) {
     event.preventDefault();
     const { id } = event.currentTarget.dataset;
     window.localStorage.setItem("monitor", id);
-    viewModel.router.replace(`?monitor=${id}`);
+    viewModel.router.replace(`/renew-b?monitor=${id}`);
     viewModel.initialize(id);
     setIsOpenMenu(false);
   };

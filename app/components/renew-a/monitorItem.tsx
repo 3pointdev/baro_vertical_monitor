@@ -26,14 +26,15 @@ export default function MonitorItem({ data }: IProps) {
    */
   useEffect(() => {
     realTimeRef.current = data.remainTime;
-    elapsedRef.current = 0;
+    elapsedRef.current = new Date().getTime() - data.countTime;
     setRealTime(data.remainTime);
-    setElapsedTime(0);
+    setElapsedTime(new Date().getTime() - data.countTime);
 
     clearInterval(intervalId);
     setIntervalId(null);
 
     if (executionText === MachineTextType.ACTIVE) {
+      setElapsedTime(0);
       const interval = setInterval(() => {
         realTimeRef.current = realTimeRef.current - 1000;
         setRealTime(realTimeRef.current);
@@ -41,7 +42,7 @@ export default function MonitorItem({ data }: IProps) {
       setIntervalId(interval);
     } else if (executionText === MachineTextType.SUCCESS) {
       const interval = setInterval(() => {
-        elapsedRef.current = elapsedRef.current + 1000;
+        elapsedRef.current = new Date().getTime() - data.countTime;
         setElapsedTime(elapsedRef.current);
       }, 1000);
       setIntervalId(interval);
@@ -98,7 +99,12 @@ export default function MonitorItem({ data }: IProps) {
     <Container className="monitoring_item">
       <MachineStatusWrap backgroundColor={executionColor}>
         <MachineNumber>{data.machineNo}</MachineNumber>
-        <Counter>{`${data.partCount} / ${data.planCount}`}</Counter>
+        <Counter>
+          <p>{`${data.partCount}/`}</p>
+          <p className={data.planCount > 0 ? "" : "not_value"}>
+            {`${data.planCount > 0 ? data.planCount : "미입력"}`}
+          </p>
+        </Counter>
         <Worker>홍길동</Worker>
         <ProductionInfomation textlength={data.program?.length}>
           <p className="program">{data.program}</p>
@@ -109,20 +115,23 @@ export default function MonitorItem({ data }: IProps) {
         <SingleETA>
           {executionText === MachineTextType.ACTIVE ? (
             <p>{timeInstance.msToHHMM(realTime > 0 ? realTime : 0)}</p>
-          ) : elapsedTime <= 60000 ? (
-            <p>{executionText}</p>
-          ) : (
+          ) : elapsedTime > 60000 &&
+            executionText === MachineTextType.SUCCESS ? (
             <WarnningETA>
               <p className="warnning_execution">{`${executionText} 후`}</p>
               <p className="warnning_time">{`${timeInstance.msToString(
                 elapsedTime
               )} 경과`}</p>
             </WarnningETA>
+          ) : (
+            <p>{executionText}</p>
           )}
         </SingleETA>
         <TotalETA>
           {data.partCount > data.planCount
-            ? "초과 생산 중"
+            ? data.planCount < 1
+              ? "목표 수량 미입력"
+              : "초과 생산 중"
             : data.partCount > 1
             ? timeInstance.msToString(data.doneTime)
             : "계산 대기 중"}
@@ -182,12 +191,18 @@ const MachineNumber = styled.p`
   font-weight: 700;
 `;
 
-const Counter = styled.p`
+const Counter = styled.div`
   position: absolute;
   right: 16px;
   top: 16px;
   font-size: 5.6vw;
   font-weight: 700;
+  white-space: nowrap;
+  display: flex;
+
+  & .not_value {
+    color: ${StyleColor.WARNNING};
+  }
 `;
 
 const Worker = styled.p`
