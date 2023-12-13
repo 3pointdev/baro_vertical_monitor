@@ -82,6 +82,9 @@ export default class MachineDto {
   @Expose({ name: "WorkTime" })
   public workTime?: number = 0;
 
+  @Expose({ name: "worker" })
+  public worker?: string = "";
+
   @Expose({ name: "isReceivePartCount" })
   public isReceivePartCount?: boolean = false;
 

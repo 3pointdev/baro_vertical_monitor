@@ -20,6 +20,7 @@ class MapperModule {
         ? plainData.process.split("(")[1].replace(")", "")
         : plainData.process,
       pause: false,
+      worker: "",
     };
 
     return plainToInstance(MachineDto, mapping);
@@ -95,6 +96,7 @@ class MapperModule {
           ? false
           : true,
       CountTime: plainData.CountTime,
+      worker: matchData.worker,
     };
 
     return plainToInstance(MachineDto, plainMachineData);
