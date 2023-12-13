@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import machineStatusInstance from "modules/machineStatus.module";
 import timeInstance from "modules/time.module";
 import { StyleColor } from "public/color";
@@ -23,6 +24,7 @@ export default function MonitorItem({ data }: IProps) {
   const realTimeRef = useRef<number>(null);
   const [realTimeInterval, setRealTimeInterval] = useState<any>();
   const [isOnCover, setIsOnCover] = useState(false);
+  const [endTime, setEndTime] = useState<string>("-");
 
   /**
    * execution이 active일때 타이머 작동함수
@@ -77,6 +79,18 @@ export default function MonitorItem({ data }: IProps) {
   }, [executionText]);
 
   useEffect(() => {
+    const time =
+      data.partCount > 5
+        ? dayjs(data.prdctEnd).format("MM/DD HH:mm")
+        : "계산 대기 중";
+    if (time) {
+      setEndTime(time);
+    } else {
+      setEndTime("-");
+    }
+  }, [data.prdctEnd]);
+
+  useEffect(() => {
     return () => {
       clearInterval(realTimeInterval);
     };
@@ -115,13 +129,7 @@ export default function MonitorItem({ data }: IProps) {
       <Footer.Wrap>
         <Footer.Progress progress={(data.partCount / data.planCount) * 100} />
         <Footer.Mid>{data.mid}</Footer.Mid>
-        <Footer.EndTime>
-          {executionText !== MachineTextType.OFF &&
-            !isOnCover &&
-            (data.partCount > 1
-              ? timeInstance.msToString(data.doneTime)
-              : "계산 대기 중")}
-        </Footer.EndTime>
+        <Footer.EndTime>{!isOnCover && endTime}</Footer.EndTime>
       </Footer.Wrap>
       {isOnCover && <StopCover>{executionText}</StopCover>}
     </Container>
