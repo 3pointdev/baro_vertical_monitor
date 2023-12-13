@@ -105,7 +105,7 @@ export default function MonitorItem({ data }: IProps) {
             {`${data.planCount > 0 ? data.planCount : "미입력"}`}
           </p>
         </Counter>
-        <Worker>홍길동</Worker>
+        <Worker>{data.worker}</Worker>
         <ProductionInfomation textlength={data.program?.length}>
           <p className="program">{data.program}</p>
           <p className="machine_name">{data.mid}</p>

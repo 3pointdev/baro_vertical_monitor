@@ -71,7 +71,36 @@ export default class ViewModel extends DefaultViewModel {
 
     await this.getMonitorList();
 
+    await this.getWorker();
+
     this.getNotice(this.monitorList, monitor);
+  };
+
+  public getWorker = async () => {
+    await this.api
+      .get(ServerUrlType.BARO, "/worker/selectWorker")
+      .then((result: AxiosResponse<any[]>) => {
+        let newMachinList = [...this.machines];
+        newMachinList = newMachinList.map((newMachine) => {
+          const matchingObject = result.data.find(
+            (worker) => +worker.id === +newMachine.id
+          );
+
+          if (matchingObject) {
+            return { ...newMachine, worker: matchingObject.worker };
+          }
+
+          return newMachine;
+        });
+
+        runInAction(() => {
+          this.machines = newMachinList;
+        });
+      })
+      .catch((error: AxiosError) => {
+        console.log("error : ", error);
+        return false;
+      });
   };
 
   selectMonitor = async () => {
