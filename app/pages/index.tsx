@@ -120,7 +120,13 @@ function Home({ router, viewModel }: IProps) {
       </Header.Wrap>
       <Article.Wrap>
         {viewModel.machines.map((machine: MachineDto, key: number) => {
-          return <MonitorItem data={machine} key={`machine_${key}`} />;
+          return (
+            <MonitorItem
+              data={machine}
+              key={`machine_${key}`}
+              machineCount={viewModel.machines.length}
+            />
+          );
         })}
       </Article.Wrap>
       <Footer.Wrap>

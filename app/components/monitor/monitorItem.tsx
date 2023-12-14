@@ -9,9 +9,10 @@ import styled from "styled-components";
 
 interface IProps {
   data: MachineDto;
+  machineCount: number;
 }
 
-export default function MonitorItem({ data }: IProps) {
+export default function MonitorItem({ data, machineCount }: IProps) {
   const [executionText, setExecutionText] = useState<MachineTextType>(
     MachineTextType.MODIFY
   );
@@ -275,14 +276,14 @@ const Footer = {
   `,
   Mid: styled.p`
     z-index: 1;
-    font-size: 48px;
+    font-size: 54px;
     color: ${StyleColor.DARK}90;
     font-weight: 600;
     line-height: 72px;
   `,
   EndTime: styled.p`
     z-index: 1;
-    font-size: 44px;
+    font-size: 54px;
     color: ${StyleColor.DARK}90;
     font-weight: 600;
     line-height: 72px;
