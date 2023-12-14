@@ -99,13 +99,16 @@ export default function MonitorItem({ data }: IProps) {
   return (
     <Container className="monitoring_item">
       <Header.Wrap>
-        <Header.Count>
-          {executionText !== MachineTextType.OFF &&
-            `${data.partCount} / ${data.planCount}`}
-        </Header.Count>
-        <Header.Lot>
-          {executionText !== MachineTextType.OFF && data.program}
-        </Header.Lot>
+        <Header.Left>{data.worker}</Header.Left>
+        <Header.Right>
+          <Header.Count>
+            {executionText !== MachineTextType.OFF &&
+              `${data.partCount} / ${data.planCount}`}
+          </Header.Count>
+          <Header.Lot>
+            {executionText !== MachineTextType.OFF && data.program}
+          </Header.Lot>
+        </Header.Right>
       </Header.Wrap>
       <RealTimeInfo.Wrap>
         <RealTimeInfo.TrafficLights color={executionColor} />
@@ -173,26 +176,38 @@ const Header = {
   Wrap: styled.div`
     z-index: 1;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     height: 28%;
+    align-items: start;
+    justify-content: space-between;
+    padding: 8px 16px;
+  `,
+  Left: styled.p`
+    font-size: 4vh;
+    font-weight: 600;
+    line-height: 4vh;
+    color: ${StyleColor.LIGHT};
+    position: relative;
+  `,
+  Right: styled.div`
+    display: flex;
+    flex-direction: column;
   `,
   Count: styled.p`
     font-size: 2.8vh;
     line-height: 1;
     color: ${StyleColor.DARKBACKGROUND}9;
     font-weight: 600;
+    text-align: end;
   `,
   Lot: styled.p`
     flex-shrink: 0;
-    max-width: 80%;
+    width: 100%;
     font-size: 2.8vh;
     line-height: 1;
     color: ${StyleColor.DARK};
     font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: end;
   `,
 };
 
