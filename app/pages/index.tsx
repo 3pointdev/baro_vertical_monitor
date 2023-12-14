@@ -292,6 +292,7 @@ const Footer = {
     overflow: hidden;
 
     & p {
+      transform: translateY(-4px);
       width: max-content;
       animation: ${({ isLongText, length }) =>
         isLongText
